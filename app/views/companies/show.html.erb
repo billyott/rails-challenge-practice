@@ -1,0 +1,27 @@
+<h1><%=@company.name%></h1>
+
+<ul>
+    <%@company.offices.each do |office|%>
+        <li><%="Office Floor: #{office.floor} - Building: #{office.building.name}"%></li>
+    <%end%>
+</ul>
+<br>
+<br>
+<h3>New Employee for <%=@company.name%></h3>
+<%=form_for @employee do |f|%>
+    <%= f.label :name %>
+    <%= f.text_field :name %><br>
+    <%= f.label :title %>
+    <%= f.text_field :title %><br>
+    <%= f.hidden_field :company_id, value: @company.id %>
+    <%= f.submit%>
+<%end%>
+
+<h3>All Employees at <%=@company.name%></h3>
+<ul>
+<%@company.employees.each do |employee|%>
+    <li><%= employee.name%> <%= button_to "Delete employee", employee_path(employee), method: :delete %></li>
+<%end%>
+</ul>
+
+<h3>Total Rent <%=@company.offices.map{|office| office.building.rent_per_floor}.sum%></h3>
